@@ -55,6 +55,10 @@ func main() {
 			}
 			ip := randIP()
 			req.Header.Add("X-Forwarded-For", ip) // LUL
+			req.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.35 Safari/537.36 are you even trying? LUL")
+			req.Header.Add("Origin", "https://xd.engagesciences.com")
+			req.Header.Add("Accept", "application/json, text/plain, */*")
+			req.Header.Add("Referer", "https://xd.engagesciences.com/display/container/dc/7b794d53-2f65-4358-a751-583be59502ba/details")
 			res, err := client.Do(req)
 			if err != nil {
 				log.Println(err)
