@@ -16,6 +16,7 @@ import (
 var (
 	url           = flag.String("url", "https://submit.engagesciences.com/metric/record/1001.json?cID=67605&apikey=52b3049d-ac0c-4222-a2e7-ff04d63098e0", "vote url")
 	maxGoRoutines = flag.Int("max", 50, "max concurrent go routines")
+	userAgent     = flag.String("ua", "Kappa", "user agent")
 )
 
 var client = &http.Client{
@@ -42,6 +43,7 @@ func randIP() string {
 }
 
 func main() {
+	fmt.Println("using user-agent:", *userAgent)
 	var active int
 	for {
 		active++
@@ -54,11 +56,13 @@ func main() {
 				panic(err)
 			}
 			ip := randIP()
-			req.Header.Add("X-Forwarded-For", ip) // LUL
-			req.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.35 Safari/537.36 are you even trying? LUL")
-			req.Header.Add("Origin", "https://xd.engagesciences.com")
-			req.Header.Add("Accept", "application/json, text/plain, */*")
-			req.Header.Add("Referer", "https://xd.engagesciences.com/display/container/dc/7b794d53-2f65-4358-a751-583be59502ba/details")
+			req.Header.Set("X-Forwarded-For", ip) // LUL
+			req.Header.Set("User-Agent", *userAgent)
+			req.Header.Set("Origin", "https://xd.engagesciences.com")
+			req.Header.Set("Accept", "application/json, text/plain, */*")
+			req.Header.Set("Referer", "https://xd.engagesciences.com/display/container/dc/7b794d53-2f65-4358-a751-583be59502ba/details")
+			req.Header.Set("Accept-Language", "en-US")
+			req.Header.Add("Accept-Encoding", "xd")
 			res, err := client.Do(req)
 			if err != nil {
 				log.Println(err)
